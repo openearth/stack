@@ -12,10 +12,11 @@
 - name: Download models
   subversion:
   args:
-    repo: https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/{{ item }}
-    dest: "{{ modeldir }}/{{ item }}"
+    repo: "{{ item.repo }}"
+    dest: "{{ modeldir }}/{{ item.slug }}"
   with_items:
-    - 2004bay
+    - { slug: 2004bay, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/2004bay" }
+    - { slug: parallel, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/parallel" }
 
 - name: Fix permissions
   sudo: yes
@@ -34,6 +35,7 @@
     dest: "/etc/supervisor/conf.d/{{ item.model }}.conf"
   with_items:
     - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu" }
+    - { model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu" }
 
 - name: Restart supervisor
   sudo: yes

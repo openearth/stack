@@ -1,0 +1,53 @@
+---
+# tasks file for dflowfm
+
+
+- name: Install packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - gfortran
+    - gcc
+    - g++
+    - libnetcdff5
+    - libnetcdf-dev
+    - build-essential
+    - autoconf
+    - automake
+    - libtool
+
+- name: Check for DflowFM source
+  command: test -d "/home/{{ ansible_ssh_user }}/src/unstruc"
+  register: unstruc
+
+- name: Download DflowFM
+  subversion: repo=https://repos.deltares.nl/repos/ds/trunk/additional/unstruc
+  args:
+    dest: "/home/{{ ansible_ssh_user }}/src/unstruc"
+    username: baart_f
+  when: not unstruc
+
+- name: Autogen
+  command: ./autogen.sh
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/unstruc"
+    creates: "/home/{{ ansible_ssh_user }}/src/unstruc/Makefile.in"
+
+# Custom FCFLAGS because /usr/include is not in default path
+- name: Configure
+  shell: FCFLAGS="-I/usr/include -g -O2" ./configure --with-netcdf
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/unstruc"
+    creates: "/home/{{ ansible_ssh_user }}/src/unstruc/Makefile"
+
+- name: Make
+  command: make
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/unstruc"
+    creates: "/home/{{ ansible_ssh_user }}/src/unstruc/src/dflowfm"
+- name: Make install
+  sudo: yes
+  command: make install
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/unstruc"
+    creates: "/usr/local/bin/dflowfm"

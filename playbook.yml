@@ -21,6 +21,7 @@
     venv: main
   roles:
     - { role: mmi, tags: [ 'mmi' ] }
+    - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
 
 
