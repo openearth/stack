@@ -1,0 +1,16 @@
+---
+# Update all packages to the latest version
+- name: Upgrade system
+  sudo: yes
+  apt: upgrade=dist
+
+# tasks file for system
+#
+- name: Install packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python-httplib2
+    - supervisor
+    - git-all
+    - subversion

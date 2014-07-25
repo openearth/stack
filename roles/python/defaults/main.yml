@@ -1,0 +1,4 @@
+---
+# default virtual env name
+venv: "main"
+venvabs: "~/.virtualenvs/{{ venv }}"

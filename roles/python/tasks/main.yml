@@ -1,0 +1,37 @@
+---
+- name: Make source and virtual env directory
+  file: path=~/src state=directory
+
+- name: Install default python packages and header files
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python
+    - python-all-dev
+    - python-scipy
+    - python-numpy
+    - python-pandas
+    - python-gdal
+    - python-skimage
+    - python-sklearn
+    - python-lxml
+    - python-virtualenv
+    - virtualenvwrapper
+    - libnetcdf-dev
+    - libhdf5-dev
+
+- name: Enable global site packages (so we do not have to build numpy and stuff)
+  file: path="{{ venvabs }}/lib/python2.7/no-global-site-packages.txt"
+  args:
+    state: absent
+
+# easy packages
+- name: Install python packages
+  pip: name={{ item }} virtualenv="{{ venvabs }}"
+  with_items:
+    - shapely
+    - gunicorn
+    - waitress
+    - python-dateutil
+    - pytz
+    - netCDF4
