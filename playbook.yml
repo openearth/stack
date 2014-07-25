@@ -2,18 +2,25 @@
 
 - name: Default setup
   hosts: all
+  vars:
+    venv: main
   roles:
     - { role: system, tags: [ 'system' ]}
     - { role: python, tags: [ 'python' ]}
 
 - name: Install WPS
   hosts: default
+  vars:
+    venv: main
   roles:
     - { role: couchdb, tags: [ 'couchdb' ] }
 
-# - name: Install Model Message service
-#   hosts: default
-#   roles:
-#     - { role: mmi, tags: [ 'mmi' ] }
+- name: Install Model Message service
+  hosts: default
+  vars:
+    venv: main
+  roles:
+    - { role: mmi, tags: [ 'mmi' ] }
+    - { role: models, tags: [ 'models' ] }
 
 

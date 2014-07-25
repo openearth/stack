@@ -1,0 +1,29 @@
+---
+# tasks file for mmi
+
+- name: Install python packages
+  pip: name={{ item }} virtualenv={{ venvabs }}
+  with_items:
+    - tornado
+
+
+- name: BMI checked out
+  command: test -d ~/src/bmi-python
+  register: bmi_exists
+
+- name: MMI checked out
+  command: test -d ~/src/mmi-python
+  register: mmi_exists
+
+- name: Download git repos
+  git: repo=https://github.com/openearth/bmi-python.git dest=~/src/bmi-python
+  when: not bmi_exists
+- name: Download git repos
+  git: repo=https://github.com/openearth/mmi-python.git dest=~/src/mmi-python
+  when: not mmi_exists
+
+- name: Install BMI
+  pip: name="~/src/bmi-python" virtualenv={{ venvabs }}
+- name: Install MMI
+  pip: name="~/src/mmi-python" virtualenv={{ venvabs }}
+

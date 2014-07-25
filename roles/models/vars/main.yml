@@ -1,0 +1,4 @@
+---
+# vars file for models
+
+modeldir: "/home/{{ ansible_ssh_user }}/models"

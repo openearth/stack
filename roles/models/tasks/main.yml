@@ -1,0 +1,43 @@
+---
+# tasks file for models
+
+- name: Create model directory
+  sudo: yes
+  file: path="{{ modeldir }}"
+  args:
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+
+- name: Download models
+  subversion:
+  args:
+    repo: https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/{{ item }}
+    dest: "{{ modeldir }}/{{ item }}"
+  with_items:
+    - 2004bay
+
+- name: Fix permissions
+  sudo: yes
+  file: path="{{ modeldir }}"
+  args:
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    recurse: yes
+
+- name: Copy supervisor file
+  sudo: yes
+  template:
+  args:
+    src: model.conf
+    dest: "/etc/supervisor/conf.d/{{ item.model }}.conf"
+  with_items:
+    - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu" }
+
+- name: Restart supervisor
+  sudo: yes
+  service: name=supervisor state=restarted
+
+
+
