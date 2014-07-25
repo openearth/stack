@@ -1,0 +1,3 @@
+---
+# defaults file for couchdb
+couchdb_dir: "/etc/couchdb"

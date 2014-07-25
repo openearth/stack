@@ -1,0 +1,55 @@
+---
+# tasks file for couchdb
+
+- name: Install CouchDB from package manager
+  sudo: True
+  apt: pkg={{ item }} state=present
+  with_items:
+    - python-httplib2
+    - couchdb
+
+- name: Stop CouchDB
+  sudo: True
+  service: name=couchdb enabled=yes state=stopped
+
+- name: Copy the local ini file
+  sudo: True
+  copy:
+    src: local.ini
+    dest: "{{ couchdb_dir }}/local.ini"
+    owner: couchdb
+    group: couchdb
+    mode: 0640
+
+- name: Start CouchDB
+  sudo: True
+  service: name=couchdb enabled=yes state=restarted
+
+- name: Copy the views
+  copy:
+    src: views.json
+    dest: /tmp/views.json
+
+- name: Delay, wait for the server to be active...
+  command: sleep 1
+
+- name: Check if couchdb is up
+  uri: url=http://localhost:5984
+
+- name: Create database
+  uri: url=http://localhost:5984/wps
+       method=PUT
+       status_code=200,201,412
+
+# if we get 412, the file already exists
+- name: Create views in database
+  uri: url=http://localhost:5984/wps/_design/views
+       method=PUT
+       body="{{ lookup('file','/tmp/views.json') }}"
+       status_code=200,400
+
+- name: Delete views file
+  file:
+    dest: /tmp/views.json
+    state: absent
+

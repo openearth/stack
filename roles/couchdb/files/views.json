@@ -1,0 +1,18 @@
+{
+    "_id": "_design/views",
+     "language": "javascript",
+    "views": {
+        "processes": {
+            "map": "function(doc) {\n\n  if (doc.type == \"processes\") {\n  \n  doc.processes.forEach(function(element){\n  emit(element.identifier, element);\n  });\n}\n}"
+        },
+        "input": {
+            "map": "function(doc) {\n  if (doc.type == \"input\") {\n     emit(null, doc);\n}\n}"
+        },
+        "output": {
+            "map": "function(doc) {\n  if (doc.type == \"output\") {\n     emit(doc._id, doc);\n}\n}"
+        },
+        "matlab": {
+            "map": "function(doc) {\n\n  if (doc.type == \"processes\" && doc.language == \"matlab\") {\n  \n  \n   emit(doc._id, doc);\n  }\n}"
+        }
+    }
+}
