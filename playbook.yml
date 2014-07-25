@@ -1,5 +1,19 @@
 ---
-- name: Install OpenEarth
+
+- name: Default setup
+  hosts: all
+  roles:
+    - { role: system, tags: [ 'system' ]}
+    - { role: python, tags: [ 'python' ]}
+
+- name: Install WPS
   hosts: default
   roles:
-    - { role: couchdb, tags: [ 'wps' ] }
+    - { role: couchdb, tags: [ 'couchdb' ] }
+
+# - name: Install Model Message service
+#   hosts: default
+#   roles:
+#     - { role: mmi, tags: [ 'mmi' ] }
+
+

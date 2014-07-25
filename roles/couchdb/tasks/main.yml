@@ -5,8 +5,9 @@
   sudo: True
   apt: pkg={{ item }} state=present
   with_items:
-    - python-httplib2
     - couchdb
+
+# TODO: add some conditions
 
 - name: Stop CouchDB
   sudo: True
@@ -31,7 +32,7 @@
     dest: /tmp/views.json
 
 - name: Delay, wait for the server to be active...
-  command: sleep 1
+  wait_for: port=5984 state=present
 
 - name: Check if couchdb is up
   uri: url=http://localhost:5984
