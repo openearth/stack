@@ -20,6 +20,7 @@
   vars:
     venv: main
   roles:
+    - { role: swap, tags: [ 'swap' ] }
     - { role: mmi, tags: [ 'mmi' ] }
     - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
