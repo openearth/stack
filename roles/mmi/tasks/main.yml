@@ -9,18 +9,20 @@
 
 - name: BMI checked out
   command: test -d ~/src/bmi-python
-  register: bmi_exists
+  register: bmi_missing
+  ignore_errors: true
 
 - name: MMI checked out
   command: test -d ~/src/mmi-python
-  register: mmi_exists
+  register: mmi_missing
+  ignore_errors: true
 
 - name: Download git repos
   git: repo=https://github.com/openearth/bmi-python.git dest=~/src/bmi-python
-  when: not bmi_exists
+  when: bmi_missing
 - name: Download git repos
   git: repo=https://github.com/openearth/mmi-python.git dest=~/src/mmi-python
-  when: not mmi_exists
+  when: mmi_missing
 
 - name: Install BMI
   pip: name="~/src/bmi-python" virtualenv={{ venvabs }}
