@@ -1,0 +1,10 @@
+---
+# defaults file for wps
+venv: "wps"
+venvdir: "/home/{{ ansible_ssh_user }}/.virtualenvs"
+venvabs: "{{ venvdir }}/{{ venv }}"
+wps_url: "http://wps.openearth.nl"
+wps_processes: "/home/{{ ansible_ssh_user }}/src/wps"
+wps_local_output: "/home/{{ ansible_ssh_user }}/output"
+wps_output: "{{ wps_url }}/output"
+couchdb: "{{ wps_url }}:5984"

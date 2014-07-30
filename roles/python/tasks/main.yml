@@ -1,9 +1,6 @@
 ---
-- name: Make source and virtualenv directory
+- name: Make src directory
   file: path=~/src state=directory
-  file: path="{{ venvdir }}"
-- name: Make virtualenv
-  command: virtualenv {{ venvabs }}
 
 - name: Install default python packages and header files
   sudo: yes
@@ -22,6 +19,13 @@
     - virtualenvwrapper
     - libnetcdf-dev
     - libhdf5-dev
+
+
+- name: Make virtualenv dir
+  file: path="{{ venvdir }}" state=directory
+- name: Make virtualenv
+  command: virtualenv {{ venvabs }}
+
 
 - name: Enable global site packages (so we do not have to build numpy and stuff)
   command: rm {{ venvabs }}/lib/python2.7/no-global-site-packages.txt

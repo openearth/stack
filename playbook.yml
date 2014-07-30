@@ -13,7 +13,9 @@
   vars:
     venv: main
   roles:
+    - { role: nginx, tags: [ 'nginx' ] }
     - { role: couchdb, tags: [ 'couchdb' ] }
+    - { role: wps, tags: [ 'wps' ] }
 
 - name: Install Model Message service
   hosts: default
