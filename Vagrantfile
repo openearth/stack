@@ -16,6 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mmi.vm.box = "ubuntu/trusty64"
   end
   config.vm.define "ckan" do |ckan|
+    ckan.vm.network "private_network", type: "dhcp"
     ckan.vm.box = "ubuntu/trusty64"
   end
   config.vm.define "default" do |default|
@@ -71,7 +72,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.groups = {
       "mmi" => ["mmi-machine"],
-      "wps" => ["wps-machine"]
+      "wps" => ["wps-machine"],
+      "ckan" => ["ckan-machine"]
     }
     ansible.playbook = "playbook.yml"
   end

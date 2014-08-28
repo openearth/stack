@@ -3,10 +3,6 @@
 
 
 # tasks file for roles/ckan
-# - name: Create site
-#   command: "{{ venv }}/bin/paster make-config ckan {{ site_dir }}/development.ini"
-# - name: Initialize database
-#   command: "{{ venv }}/bin/paster --plugin=ckan db init -c {{ site_dir }}/development.ini"
 
 
 - name: Install packages
@@ -25,18 +21,39 @@
 - name: Install ckan requirements
   pip: requirements="{{ venvabs }}/src/ckan/requirements.txt" virtualenv="{{ venvabs }}"
 
+- name: Link solr schema
+  sudo: yes
+  file:
+  args:
+      src: "{{ venvabs }}/src/ckan/config/solr/schema.xml"
+      dest: "/etc/solr/conf/schema.xml"
+      state: link
+      force: yes
 
-# - name: Download solr
-#   command: wget http://mirrors.sonic.net/apache/lucene/solr/4.9.0/solr-4.9.0.zip
+- name: Restart solr
+  sudo: yes
+  service: name=tomcat6 state=restarted
+
+- name: Create site directory
+  file: path="{{ sitedir }}/ckan" state=directory
+
+# - name: Create site
+#   command: "{{ venvabs }}/bin/paster make-config ckan {{ sitedir }}/ckan/development.ini"
 #   args:
-#     creates: solr-4.9.0.zip
+#     creates: "{{ sitedir }}/ckan/development.ini"
 
-# - name: Install unzip
-#   sudo: yes
-#   apt: name=unzip state=installed
+- name: Create site
+  template: src=development.ini dest="{{ sitedir }}/ckan/development.ini"
 
-# - name: Unpack
-#   command: unzip solr-4.9.0.zip
-#   args:
-#     creates: solr-4.9.0
+- name: Initialize database
+  command: "{{ venvabs }}/bin/paster --plugin=ckan db init -c {{ sitedir }}/ckan/development.ini"
+
+- name: Link repoze stuff
+  file:
+  args:
+      src: "{{ venvabs }}/src/ckan/who.ini"
+      dest: "{{ sitedir }}/ckan/who.ini"
+      state: link
+
+
 

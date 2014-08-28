@@ -3,3 +3,4 @@
 venv: "main"
 venvdir: "/home/{{ ansible_ssh_user }}/.virtualenvs"
 venvabs: "{{ venvdir }}/{{ venv }}"
+sitedir: "/home/{{ ansible_ssh_user }}/site"
