@@ -1,0 +1,42 @@
+---
+
+
+
+# tasks file for roles/ckan
+# - name: Create site
+#   command: "{{ venv }}/bin/paster make-config ckan {{ site_dir }}/development.ini"
+# - name: Initialize database
+#   command: "{{ venv }}/bin/paster --plugin=ckan db init -c {{ site_dir }}/development.ini"
+
+
+- name: Install packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - solr-tomcat
+
+# easy packages
+- name: Install python packages
+  pip: name={{ item }} virtualenv="{{ venvabs }}"
+  with_items:
+    git+https://github.com/ckan/ckan.git#egg=ckan
+
+
+- name: Install ckan requirements
+  pip: requirements="{{ venvabs }}/src/ckan/requirements.txt" virtualenv="{{ venvabs }}"
+
+
+# - name: Download solr
+#   command: wget http://mirrors.sonic.net/apache/lucene/solr/4.9.0/solr-4.9.0.zip
+#   args:
+#     creates: solr-4.9.0.zip
+
+# - name: Install unzip
+#   sudo: yes
+#   apt: name=unzip state=installed
+
+# - name: Unpack
+#   command: unzip solr-4.9.0.zip
+#   args:
+#     creates: solr-4.9.0
+

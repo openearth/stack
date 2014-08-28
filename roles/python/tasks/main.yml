@@ -23,8 +23,12 @@
 
 - name: Make virtualenv dir
   file: path="{{ venvdir }}" state=directory
+  register: venv_created
+
+
 - name: Make virtualenv
   command: virtualenv {{ venvabs }}
+  when: venv_created | changed
 
 
 - name: Enable global site packages (so we do not have to build numpy and stuff)
@@ -42,3 +46,4 @@
     - python-dateutil
     - pytz
     - netCDF4
+    - rainbow-logging-handler<2.2.1

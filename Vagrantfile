@@ -10,7 +10,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu/trusty64"
+
+
+  config.vm.define "mmi" do |mmi|
+    mmi.vm.box = "ubuntu/trusty64"
+  end
+  config.vm.define "ckan" do |ckan|
+    ckan.vm.box = "ubuntu/trusty64"
+  end
+  config.vm.define "default" do |default|
+    default.vm.box = "ubuntu/trusty64"
+  end
+
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -58,6 +69,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Run from command line like this:
   # ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory --private-key=~/.vagrant.d/insecure_private_key -u vagrant playbook.yml
   config.vm.provision "ansible" do |ansible|
+    ansible.groups = {
+      "mmi" => ["mmi-machine"],
+      "wps" => ["wps-machine"]
+    }
     ansible.playbook = "playbook.yml"
   end
 

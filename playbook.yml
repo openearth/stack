@@ -9,7 +9,7 @@
     - { role: python, tags: [ 'python' ]}
 
 - name: Install WPS
-  hosts: default
+  hosts: wps
   vars:
     venv: main
   roles:
@@ -18,7 +18,7 @@
     - { role: wps, tags: [ 'wps' ] }
 
 - name: Install Model Message service
-  hosts: default
+  hosts: mmi
   vars:
     venv: main
   roles:
@@ -26,5 +26,17 @@
     - { role: mmi, tags: [ 'mmi' ] }
     - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
+
+
+- name: Install CKAN
+  hosts: ckan
+  vars:
+    venv: main
+    databases:
+      - { name: ckan_default, owner: ckan_default, encoding: utf-8 }
+  roles:
+    - { role: swap, tags: [ 'swap' ] }
+    - { role: postgis, tags: [ 'postgis' ] }
+    - { role: ckan, tags: [ 'ckan' ] }
 
 

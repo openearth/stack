@@ -6,26 +6,38 @@
   with_items:
     - tornado
 
-
-- name: BMI checked out
-  command: test -d ~/src/bmi-python
-  register: bmi_missing
-  ignore_errors: true
-
-- name: MMI checked out
-  command: test -d ~/src/mmi-python
-  register: mmi_missing
-  ignore_errors: true
-
 - name: Download git repos
-  git: repo=https://github.com/openearth/bmi-python.git dest=~/src/bmi-python
-  when: bmi_missing
+  git: repo=https://github.com/openearth/bmi-python.git
+       dest=~/src/bmi-python
+       update=no
 - name: Download git repos
-  git: repo=https://github.com/openearth/mmi-python.git dest=~/src/mmi-python
-  when: mmi_missing
+  git: repo=https://github.com/openearth/mmi-python.git
+       dest=~/src/mmi-python
+       update=no
+
+- name: Update git repos
+  git: repo=https://github.com/openearth/bmi-python.git
+       dest=~/src/bmi-python
+       update=yes
+
+- name: Update git repos
+  git: repo=https://github.com/openearth/mmi-python.git
+       dest=~/src/mmi-python
+       update=yes
 
 - name: Install BMI
   pip: name="~/src/bmi-python" virtualenv={{ venvabs }}
 - name: Install MMI
   pip: name="~/src/mmi-python" virtualenv={{ venvabs }}
 
+
+- name: Copy supervisor file
+  sudo: yes
+  template:
+  args:
+    src: tracker.conf
+    dest: "/etc/supervisor/conf.d/tracker.conf"
+
+- name: Reload supervisor
+  sudo: yes
+  service: name=supervisor state=restarted

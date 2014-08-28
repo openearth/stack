@@ -2,7 +2,7 @@
 # Update all packages to the latest version
 - name: Upgrade system
   sudo: yes
-  apt: upgrade=dist
+  apt: upgrade=safe update_cache=yes
 
 # tasks file for system
 #

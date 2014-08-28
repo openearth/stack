@@ -1,0 +1,5 @@
+---
+# vars file for roles/ckan
+venv: "main"
+venvdir: "/home/{{ ansible_ssh_user }}/.virtualenvs"
+venvabs: "{{ venvdir }}/{{ venv }}"
