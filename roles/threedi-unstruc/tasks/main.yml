@@ -1,0 +1,22 @@
+---
+# tasks file for threedi-unstruc
+- name: Threedi unstruc git repository
+  git:
+  args:
+    repo: https://github.com/openearth/threedi-unstruc
+    dest: src/threedi-unstruc
+
+- name: Install gulp
+  npm: name=gulp global=yes
+- name: Install bower
+  npm: name=bower global=yes
+
+- name: Install local gulp
+  npm: name=gulp path=/home/ubuntu/src/threedi-unstruc state=latest
+- name: Install local bower
+  npm: name=gulp path=/home/ubuntu/src/threedi-unstruc state=latest
+
+- name: Build website
+  shell: bash --login -c "gulp build"
+  args:
+    chdir: ~/src/threedi-unstruc
