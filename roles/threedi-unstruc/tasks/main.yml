@@ -6,6 +6,12 @@
     repo: https://github.com/openearth/threedi-unstruc
     dest: src/threedi-unstruc
 
+- name: Ruby-sass
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - ruby-sass
+
 - name: Install gulp
   npm: name=gulp global=yes
 - name: Install bower
@@ -15,8 +21,15 @@
   npm: name=gulp path=/home/ubuntu/src/threedi-unstruc state=latest
 - name: Install local bower
   npm: name=gulp path=/home/ubuntu/src/threedi-unstruc state=latest
+- name: Install local files
+  npm: path=/home/ubuntu/src/threedi-unstruc state=latest
+
+- name: Download bower stuff
+  shell: /home/ubuntu/.node/bin/bower install
+  args:
+    chdir: ~/src/threedi-unstruc
 
 - name: Build website
-  shell: bash --login -c "gulp build"
+  shell: /home/ubuntu/.node/bin/gulp build
   args:
     chdir: ~/src/threedi-unstruc
