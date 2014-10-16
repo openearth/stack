@@ -13,6 +13,7 @@
   vars:
     venv: main
   roles:
+    - { role: swap, tags: [ 'swap' ] }
     - { role: nginx, tags: [ 'nginx' ] }
     - { role: couchdb, tags: [ 'couchdb' ] }
     - { role: wps, tags: [ 'wps' ] }

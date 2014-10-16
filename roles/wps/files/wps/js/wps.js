@@ -21,7 +21,7 @@ function updateview(view, id) {
 updateview("http://54.77.21.140/couchdb/wps/_design/views/_view/input?callback=?", "#inputlist");
 updateview("http://54.77.21.140/couchdb/wps/_design/views/_view/output?callback=?", "#outputlist");
 
-var jqxhr = $.ajax( "http://54.77.21.140/wps?request=GetCapabilities&service=wps&version=1.0.0" )
+var jqxhr = $.ajax( "/wps?request=GetCapabilities&service=wps&version=1.0.0" )
         .done(function(data) {
             var processes = $(data).find("Process");
             var items = [];

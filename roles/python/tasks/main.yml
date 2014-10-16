@@ -10,7 +10,6 @@
     - python-all-dev
     - python-scipy
     - python-numpy
-    - python-pandas
     - python-gdal
     - python-skimage
     - python-sklearn
@@ -46,4 +45,5 @@
     - python-dateutil
     - pytz
     - netCDF4
+    - pandas
     - rainbow-logging-handler<2.2.1
