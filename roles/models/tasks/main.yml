@@ -37,9 +37,28 @@
     - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600 }
     - { model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900 }
 
+
+- name: Start supervisor
+  sudo: yes
+  supervisorctl:
+  args:
+    name: "{{ item.model }}"
+    state: started
+  with_items:
+    - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600 }
+    - { model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900 }
+  ignore_errors: True
+
 - name: Restart supervisor
   sudo: yes
-  service: name=supervisor state=restarted
+  supervisorctl:
+  args:
+    name: "{{ item.model }}"
+    state: restarted
+  with_items:
+    - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600 }
+    - { model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900 }
+  ignore_errors: True
 
 
 

@@ -1,0 +1,67 @@
+---
+# tasks file for vectors
+
+
+- name: Install extra python packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python-psycopg2
+
+- name: Install python packages
+  pip: name={{ item }} virtualenv="{{ venvabs }}"
+  with_items:
+    - gunicorn
+    - zope.interface
+    - pyramid
+    - simplekml
+    - pydap
+    - couchdb
+
+- name: Download vectors
+  subversion:
+  args:
+    repo: https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/vectors
+    dest: src/vectors
+
+- name: Download OpenEarthTools package
+  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/OpenEarthTools dest=~/src/OpenEarthTools username=baart_f
+
+- name: Install OpenEarth
+  pip: name=~/src/OpenEarthTools virtualenv={{ venvabs }} extra_args=-e
+
+- name: Install vectors
+  pip: name=~/src/vectors virtualenv={{ venvabs }} extra_args=-e
+
+
+- name: Autostart vectors using supervisor
+  sudo: yes
+  template:
+  args:
+    src: supervisor_vectors.conf
+    dest: /etc/supervisor/conf.d/vectors.conf
+
+# - name: Start supervisor
+#   sudo: yes
+#   service: name=supervisor state=restarted
+
+
+# - name: Copy nginx lizard configuration
+#   sudo: yes
+#   template:
+#   args:
+#     src: nginx_lizard.conf
+#     dest: /etc/nginx/sites-available/lizard.conf
+
+# - name: Remove default site
+#   sudo: yes
+#   file: dest=/etc/nginx/sites-enabled/default state=absent
+
+# - name: Enable lizard site
+#   sudo: yes
+#   file: src=/etc/nginx/sites-available/lizard.conf dest=/etc/nginx/sites-enabled/lizard.conf state=link
+
+# - name: Start nginx
+#   sudo: yes
+#   service: name=nginx state=restarted
+

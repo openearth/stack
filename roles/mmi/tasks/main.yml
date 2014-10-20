@@ -40,4 +40,4 @@
 
 - name: Reload supervisor
   sudo: yes
-  service: name=supervisor state=restarted
+  supervisorctl: name=tracker state=restarted

@@ -18,18 +18,49 @@
   npm: name=bower global=yes
 
 - name: Install local gulp
-  npm: name=gulp path=/home/ubuntu/src/threedi-unstruc state=latest
+  npm:
+  args:
+    name: gulp
+    path: "/home/{{ ansible_ssh_user}}/src/threedi-unstruc"
+    state: latest
+
 - name: Install local bower
-  npm: name=gulp path=/home/ubuntu/src/threedi-unstruc state=latest
+  npm: name=gulp path=/home/{{ ansible_ssh_user}}/src/threedi-unstruc state=latest
 - name: Install local files
-  npm: path=/home/ubuntu/src/threedi-unstruc state=latest
+  npm: path=/home/{{ ansible_ssh_user}}/src/threedi-unstruc state=latest
 
 - name: Download bower stuff
-  shell: /home/ubuntu/.node/bin/bower install
+  shell: /home/{{ ansible_ssh_user}}/.node/bin/bower install
   args:
     chdir: ~/src/threedi-unstruc
 
 - name: Build website
-  shell: /home/ubuntu/.node/bin/gulp build
+  shell: /home/{{ ansible_ssh_user}}/.node/bin/gulp build
   args:
     chdir: ~/src/threedi-unstruc
+
+- name: Copy nginx threedi unstruc configuration
+  sudo: yes
+  template:
+  args:
+    src: nginx_threedi-unstruc.conf
+    dest: /etc/nginx/sites-available/threedi-unstruc.conf
+
+- name: Remove default site
+  sudo: yes
+  file: dest=/etc/nginx/sites-enabled/default state=absent
+
+- name: Enable threedi site
+  sudo: yes
+  file:
+  args:
+    src: /etc/nginx/sites-available/threedi-unstruc.conf
+    dest: /etc/nginx/sites-enabled/threedi-unstruc.conf
+    state: link
+
+- name: Restart threedi
+  sudo: yes
+  service:
+  args:
+    name: nginx
+    state: restarted

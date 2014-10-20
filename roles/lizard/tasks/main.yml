@@ -86,6 +86,29 @@
   service: name=supervisor state=restarted
 
 
+- name: Copy nginx lizard configuration
+  sudo: yes
+  template:
+  args:
+    src: nginx_lizard.conf
+    dest: /etc/nginx/sites-available/lizard.conf
+
+- name: Remove default site
+  sudo: yes
+  file: dest=/etc/nginx/sites-enabled/default state=absent
+
+- name: Enable lizard site
+  sudo: yes
+  file: src=/etc/nginx/sites-available/lizard.conf dest=/etc/nginx/sites-enabled/lizard.conf state=link
+
+- name: Start nginx
+  sudo: yes
+  service: name=nginx state=restarted
+
+
+
+
+
 
 
 

@@ -20,6 +20,10 @@
     - libopenmpi-dev
     - openmpi-bin
 
+- name: Update search path for libraries (/usr/local/lib)
+  sudo: yes
+  command: ldconfig
+
 - name: Check for DflowFM source
   command: test -d "/home/{{ ansible_ssh_user }}/src/unstruc"
   register: fm_source

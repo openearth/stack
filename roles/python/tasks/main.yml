@@ -19,7 +19,6 @@
     - libnetcdf-dev
     - libhdf5-dev
 
-
 - name: Make virtualenv dir
   file: path="{{ venvdir }}" state=directory
   register: venv_created
