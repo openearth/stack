@@ -1,0 +1,95 @@
+---
+# tasks file for lizard
+
+- name: Install extra python packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python-psycopg2
+    - python-matplotlib
+    - python-pyproj
+    - wget
+    - libatlas-base-dev
+    - gfortran
+    - g++
+    - libz-dev
+    - libpng-dev
+    - libfreetype6-dev
+    - python-dev
+    - liblapack-dev
+    - python-numpy
+    - python-scipy
+    - python-six
+
+# - name: Install python packages
+#   pip: name={{ item }} virtualenv="{{ venvabs }}"
+#   with_items:
+#     - six
+
+- name: Download lizard
+  git: repo=https://github.com/lizardsystem/lizard-kml
+       dest=src/lizard-kml
+
+
+- name: Start bootstrap
+  command: "{{ venvabs }}/bin/python bootstrap.py"
+  args:
+    chdir: src/lizard-kml
+    creates: src/lizard-kml/bin/buildout
+
+- name: Replace version
+  lineinfile:
+  args:
+    dest: src/lizard-kml/buildout.cfg
+    regexp: ^netCDF4 = 1
+    line: netCDF4 = 1.1.1 # edited by ansible
+
+- name: Start buildout
+  command: "bin/buildout"
+  args:
+    chdir: src/lizard-kml
+
+# This process might wait for user input for some reason
+- name: Create tables
+  command: "bin/django syncdb --noinput"
+  args:
+    chdir: src/lizard-kml
+
+
+- name: Update tables
+  command: "bin/django migrate --noinput"
+  args:
+    chdir: src/lizard-kml
+
+- name: Load default data
+  command: "bin/django loaddata lizard_kml"
+  args:
+    chdir: src/lizard-kml
+
+# Bug in geos or whatever produces this version string
+- name: Replace version
+  lineinfile:
+  args:
+    dest: src/lizard-kml/eggs/Django-1.4.8-py2.7.egg/django/contrib/gis/geos/libgeos.py
+    regexp: ^version_regex
+    line: version_regex = re.compile(r'^(?P<version>(?P<major>\d+)\.(?P<minor>\d+)\.(?P<subminor>\d+))((rc(?P<release_candidate>\d+))|dev)?-CAPI-(?P<capi_version>\d+\.\d+\.\d+)(\s+r\d+)?$')
+
+- name: Autostart lizard using supervisor
+  sudo: yes
+  template:
+  args:
+    src: supervisor_lizard.conf
+    dest: /etc/supervisor/conf.d/lizard.conf
+
+- name: Start supervisor
+  sudo: yes
+  service: name=supervisor state=restarted
+
+
+
+
+
+
+
+
+

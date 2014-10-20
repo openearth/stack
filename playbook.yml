@@ -7,23 +7,30 @@
   roles:
     - { role: system, tags: [ 'system' ]}
     - { role: python, tags: [ 'python' ]}
+    - { role: swap, tags: [ 'swap' ] }
 
 - name: Install WPS
   hosts: wps
   vars:
     venv: main
   roles:
-    - { role: swap, tags: [ 'swap' ] }
     - { role: nginx, tags: [ 'nginx' ] }
     - { role: couchdb, tags: [ 'couchdb' ] }
     - { role: wps, tags: [ 'wps' ] }
+
+- name: Lizard viewer
+  hosts: lizard
+  vars:
+    venv: main
+  roles:
+    - { role: nginx, tags: [ 'nginx' ] }
+    - { role: lizard, tags: [ 'lizard' ] }
 
 - name: Install Model Message service
   hosts: mmi
   vars:
     venv: main
   roles:
-    - { role: swap, tags: [ 'swap' ] }
     - { role: mmi, tags: [ 'mmi' ] }
     - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
@@ -37,7 +44,6 @@
     databases:
       - { name: ckan_default, owner: ckan_default, encoding: utf-8 }
   roles:
-    - { role: swap, tags: [ 'swap' ] }
     - { role: postgis, tags: [ 'postgis' ] }
     - { role: ckan, tags: [ 'ckan' ] }
 
