@@ -13,10 +13,12 @@
   with_items:
     - gunicorn
     - zope.interface
-    - pyramid
     - simplekml
     - pydap
     - couchdb
+
+- name: Install pyramid 1.4.6 (requires template fix for >=1.5)
+  pip: name=pyramid virtualenv="{{ venvabs }}" version=1.4.6
 
 - name: Download vectors
   subversion:

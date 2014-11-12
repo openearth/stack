@@ -34,8 +34,8 @@
     src: model.conf
     dest: "/etc/supervisor/conf.d/{{ item.model }}.conf"
   with_items:
-    - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600 }
-    - { model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900 }
+    - { model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600, args: "-o s1 --interval 10" }
+    - { model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900, args: "-o s1 --interval 10" }
 
 
 - name: Start supervisor

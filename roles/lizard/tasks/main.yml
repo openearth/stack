@@ -84,6 +84,7 @@
 - name: Start supervisor
   sudo: yes
   service: name=supervisor state=restarted
+  ignore_errors: yes
 
 
 - name: Copy nginx lizard configuration

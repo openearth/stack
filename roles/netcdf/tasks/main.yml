@@ -1,0 +1,49 @@
+---
+# tasks file for netcdf
+
+- name: Install packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - gfortran
+    - gcc
+    - g++
+    - flex
+    - bison
+    - libnetcdff5
+    - libnetcdf-dev
+    - build-essential
+    - autoconf
+    - automake
+    - libtool
+    - libopenmpi-dev
+    - openmpi-bin
+    - libcurl4-gnutls-dev
+
+- name: Update search path for libraries (/usr/local/lib)
+  sudo: yes
+  command: ldconfig
+
+
+- name: Download c sources
+  git: repo=https://github.com/Unidata/netcdf-c
+  args:
+    version: "{{ netcdf_c_version }}"
+    dest: "/home/{{ ansible_ssh_user }}/src/netcdf-c"
+
+
+- name: make build scripts
+  template:
+  args:
+    src: build.sh
+    dest: "/home/{{ ansible_ssh_user }}/src/netcdf-c/build.sh"
+
+- name: Make executable
+  file:
+    path: "/home/{{ ansible_ssh_user }}/src/netcdf-c/build.sh"
+    mode: 0755
+
+- name: Build netcdf-c
+  command: ./build.sh
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/netcdf-c"

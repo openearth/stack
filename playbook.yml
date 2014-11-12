@@ -25,6 +25,8 @@
   roles:
     - { role: nginx, tags: [ 'nginx' ] }
     - { role: lizard, tags: [ 'lizard' ] }
+    - { role: netcdf, tags: [ 'netcdf' ] } # custom netCDF4 version because 4.1.1 is broken
+    - { role: vectors, tags: [ 'vectors' ] }
 
 - name: Install Model Message service
   hosts: mmi
@@ -35,6 +37,7 @@
     - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
     - { role: nodejs, tags: ['nodejs']}
+    - { role: nginx, tags: [ 'nginx' ] }
     - { role: threedi-unstruc, tags: ['threedi-unstruc']}
 
 - name: Install CKAN

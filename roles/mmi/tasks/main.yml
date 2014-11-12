@@ -26,9 +26,9 @@
        update=yes
 
 - name: Install BMI
-  pip: name="~/src/bmi-python" virtualenv={{ venvabs }}
+  pip: name="~/src/bmi-python" virtualenv={{ venvabs }} extra_args=-e
 - name: Install MMI
-  pip: name="~/src/mmi-python" virtualenv={{ venvabs }}
+  pip: name="~/src/mmi-python" virtualenv={{ venvabs }} extra_args=-e
 
 
 - name: Copy supervisor file

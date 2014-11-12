@@ -13,10 +13,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
   config.vm.define "mmi" do |mmi|
+    mmi.vm.network "private_network", type: "dhcp"
     mmi.vm.box = "ubuntu/trusty64"
   end
   config.vm.define "wps" do |wps|
-    # wps.vm.network "private_network", type: "dhcp"
+    wps.vm.network "private_network", type: "dhcp"
     wps.vm.box = "ubuntu/trusty64"
   end
   config.vm.define "lizard" do |lizard|

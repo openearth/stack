@@ -88,3 +88,4 @@
   service: name=nginx state=restarted
 
 
+# TODO: add to crontab find /tmp -name 'pywps-instance*' -type d -mtime +1 -exec rm -r {} \; #

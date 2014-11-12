@@ -1,0 +1,4 @@
+---
+# defaults file for netcdf
+netcdf_fortran_version: v4.4.0
+netcdf_c_version: v4.3.2
