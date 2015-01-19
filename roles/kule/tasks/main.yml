@@ -13,4 +13,19 @@
   pip: name={{ item }} virtualenv="{{ venvabs }}"
   with_items:
     - pymongo
-    - kule
+    - git+https://github.com/SiggyF/kule@swapp-0.1#egg=kule
+
+- name: Stop supervisor
+  sudo: yes
+  service: name=supervisor state=stopped
+
+- name: Copy supervisor process
+  sudo: yes
+  template:
+  args:
+    src: supervisor_kule.conf
+    dest: /etc/supervisor/conf.d/kule.conf
+
+- name: Start supervisor
+  sudo: yes
+  service: name=supervisor state=started

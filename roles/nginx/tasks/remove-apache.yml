@@ -1,0 +1,8 @@
+- name: Stop apache
+  sudo: yes
+  service: name=apache2 state=stopped
+
+- name: Disable apache
+  sudo: yes
+  command: update-rc.d apache2 disable removes=/etc/rc5.d/S91apache2
+

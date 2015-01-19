@@ -1,2 +1,4 @@
 ---
 # defaults file for kule
+venvdir: "/home/{{ ansible_ssh_user }}/.virtualenvs"
+venvabs: "{{ venvdir }}/{{ venv }}"

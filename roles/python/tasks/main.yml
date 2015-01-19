@@ -16,8 +16,10 @@
     - python-lxml
     - python-virtualenv
     - virtualenvwrapper
+    - libgeos-dev
     - libnetcdf-dev
     - libhdf5-dev
+    - cython
 
 - name: Make virtualenv dir
   file: path="{{ venvdir }}" state=directory
@@ -35,10 +37,11 @@
 
 
 # easy packages
+# shapely expects geos for performance, 1.5 breaks
 - name: Install python packages
   pip: name={{ item }} virtualenv="{{ venvabs }}"
   with_items:
-    - shapely
+    - shapely<1.5
     - gunicorn
     - waitress
     - python-dateutil

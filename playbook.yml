@@ -55,6 +55,7 @@
   vars:
     venv: main
   roles:
+    - { role: swap, tags: [ 'swap' ] }
     - role: nginx
       sudo: yes
       tags: [ 'nginx' ]
