@@ -1,0 +1,4 @@
+---
+
+mongodb_repository: deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen
+mongodb_conf_bind_ip: 0.0.0.0   # Comma separated list of ip addresses to listen on

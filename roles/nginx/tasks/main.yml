@@ -1,23 +1,14 @@
 ---
+- include: installation.packages.yml
+  when: nginx_installation_type == "packages"
+- include: remove-defaults.yml
+  when: not keep_only_specified
+- include: remove-extras.yml
+  when: keep_only_specified
+- include: remove-unwanted.yml
+- include: configuration.yml
 
-- name: Install nginx
-  sudo: yes
-  apt: pkg=nginx state=installed
-
-- name: Stop apache
-  sudo: yes
-  service: name=apache2 state=stopped
-
-- name: Disable apache
-  sudo: yes
-  command: update-rc.d apache2 disable removes=/etc/rc5.d/S91apache2
-
-- name: Enable nginx
-  sudo: yes
-  command: update-rc.d nginx enable creates=/etc/rc5.d/S20nginx
-
-- name: Start nginx
-  sudo: yes
-  service: name=nginx state=restarted
-
-
+- name: Start the nginx service
+  service: name=nginx state=started enabled=yes
+  when: nginx_installation_type in nginx_installation_types_using_service and nginx_daemon_mode
+  tags: [service,nginx]

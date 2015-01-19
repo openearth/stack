@@ -1,0 +1,23 @@
+      thetamin =262.5000 Warning: value > recommended value of180.0000
+      thetamax =277.5000 Warning: value > recommended value of180.0000
+ Warning: input parameters eps, hmin, hswitch and dzmax are scaled with
+          depthscale to:
+  eps =.0001
+  hmin =.0050
+  hswitch =.0025
+  dzmax =.0002
+  Warning: 2D absorbing boundary condition [front=abs_2d] reduces to a
+           1D absorbing boundary condition [front=abs_1d] in
+           1D mode [ny=0]
+  Warning: 2D absorbing boundary condition [back=abs_2d] reduces to a
+           1D absorbing boundary condition [back=abs_1d] in
+           1D mode [ny=0]
+   Unknown, unused or multiple statements of parameterSWTABLE inparams.txt
+            fp =.4817 Warning: value > recommended value of.4000
+            fp =.4780 Warning: value > recommended value of.4000
+            fp =.4735 Warning: value > recommended value of.4000
+            fp =.4693 Warning: value > recommended value of.4000
+            fp =.4637 Warning: value > recommended value of.4000
+            fp =.4589 Warning: value > recommended value of.4000
+            fp =.4561 Warning: value > recommended value of.4000
+            fp =.4515 Warning: value > recommended value of.4000

@@ -1,0 +1,16 @@
+---
+# tasks file for kule
+
+# Install system version
+- name: Install extra python packages
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python-pymongo
+
+# or user version
+- name: Install python packages
+  pip: name={{ item }} virtualenv="{{ venvabs }}"
+  with_items:
+    - pymongo
+    - kule

@@ -1,0 +1,13 @@
+---
+
+- include: install.deb.yml
+  when: ansible_os_family == 'Debian'
+
+- include: configure.yml
+
+- name: Ensure mongodb is started
+  service: name={{ mongodb_daemon_name }} state=started enabled=yes
+  changed_when: False
+
+- include: mms-agent.yml
+  when: mongodb_mms_api_key != ""

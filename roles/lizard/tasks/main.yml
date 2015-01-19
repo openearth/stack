@@ -66,6 +66,11 @@
   args:
     chdir: src/lizard-kml
 
+- name: Replace logo on the left
+  file:
+    src: logo.png
+    dest: src/lizard-kml/lizard_kml/static/lizard_kml/logo_rijksoverheid_klein.png
+
 # Bug in geos or whatever produces this version string
 - name: Replace version
   lineinfile:
@@ -85,7 +90,6 @@
   sudo: yes
   service: name=supervisor state=restarted
   ignore_errors: yes
-
 
 - name: Copy nginx lizard configuration
   sudo: yes

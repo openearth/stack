@@ -1,0 +1,6 @@
+---
+
+- include: mongodb.yml
+  sudo: yes
+  when: mongodb_enabled
+  tags: [mongodb]

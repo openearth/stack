@@ -20,6 +20,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     wps.vm.network "private_network", type: "dhcp"
     wps.vm.box = "ubuntu/trusty64"
   end
+  config.vm.define "swapp" do |mmi|
+    mmi.vm.network "private_network", type: "dhcp"
+    mmi.vm.box = "ubuntu/trusty64"
+  end
   config.vm.define "lizard" do |lizard|
     lizard.vm.network "private_network", type: "dhcp"
     lizard.vm.box = "ubuntu/trusty64"

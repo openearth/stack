@@ -35,7 +35,6 @@
 - name: Install vectors
   pip: name=~/src/vectors virtualenv={{ venvabs }} extra_args=-e
 
-
 - name: Autostart vectors using supervisor
   sudo: yes
   template:

@@ -19,7 +19,17 @@
     - libtool
     - libopenmpi-dev
     - openmpi-bin
-
+    - petsc-dev
+    - libmetis5
+    - metis
+    - libmetis-dev
+    - libpetsc3.4.2-dev
+    - libslepc3.4.2-dev
+    - libslepc3.4.2
+    - libpetsc3.4.2
+    - petsc-dev
+    - python-mako
+    - texinfo
 - name: Update search path for libraries (/usr/local/lib)
   sudo: yes
   command: ldconfig
@@ -45,12 +55,12 @@
 
 # Custom FCFLAGS because /usr/include is not in default path
 - name: Configure
-  shell: FCFLAGS="-I/usr/include -g -O2" ./configure --with-netcdf
+  shell: FCFLAGS="-I/usr/include -g -O2" ./configure --with-netcdf --without-petsc
   args:
     chdir: "/home/{{ ansible_ssh_user }}/src/unstruc"
     creates: "/home/{{ ansible_ssh_user }}/src/unstruc/Makefile"
 
-
+# PKG_CONFIG_PATH=/usr/lib/petscdir/3.4.2/linux-gnu-c-opt/lib/pkgconfig FCFLAGS="-I/usr/include -I/usr/include/petsc -I/usr/lib/petscdir/3.4.2/linux-gnu-c-opt/include -g -O2" ./configure --with-netcdf
 - name: Make
   command: make
   args:
@@ -64,40 +74,79 @@
     creates: "/usr/local/bin/dflowfm"
 
 
+# Delft3d
+# - name: Check for Delft3D source
+#   command: test -d "/home/{{ ansible_ssh_user }}/src/delft3d"
+#   register: delft3d_source
+#   ignore_errors: true
 
-- name: Check for Delft3D source
-  command: test -d "/home/{{ ansible_ssh_user }}/src/delft3d"
-  register: delft3d_source
+# - name: Download Delft3D
+#   subversion: repo=https://svn.oss.deltares.nl/repos/delft3d/branches/research/Deltares/20140512_Irv
+#   args:
+#     dest: "/home/{{ ansible_ssh_user }}/src/delft3d"
+#     username: baart_f
+#   when: delft3d_source|failed
+
+# - name: Autogen
+#   command: ./autogen.sh
+#   args:
+#     chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
+#     creates: "/home/{{ ansible_ssh_user }}/src/delft3d/Makefile.in"
+
+# # Custom FCFLAGS because /usr/include is not in default path
+# - name: Configure
+#   shell: FCFLAGS="-I/usr/include -g -O2" ./configure  --with-mpi
+#   args:
+#     chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
+#     creates: "/home/{{ ansible_ssh_user }}/src/delft3d/Makefile"
+
+# - name: Make delft3d
+#   command: make
+#   args:
+#     chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
+
+# - name: Make install
+#   sudo: yes
+#   command: make install
+#   args:
+#     chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
+#     creates: "/usr/local/bin/d_hydro.exe"
+
+#XBeach
+
+- name: Check for XBeach source
+  command: test -d "/home/{{ ansible_ssh_user }}/src/xbeach"
+  register: xbeach_source
   ignore_errors: true
 
-- name: Download Delft3D
-  subversion: repo=https://svn.oss.deltares.nl/repos/delft3d/branches/research/Deltares/20140512_Irv
+- name: Download XBeach
+  subversion: repo=https://svn.oss.deltares.nl/repos/xbeach/branches/fedor-template
   args:
-    dest: "/home/{{ ansible_ssh_user }}/src/delft3d"
+    dest: "/home/{{ ansible_ssh_user }}/src/xbeach"
     username: baart_f
-  when: delft3d_source|failed
+  when: xbeach_source|failed
 
 - name: Autogen
   command: ./autogen.sh
   args:
-    chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
-    creates: "/home/{{ ansible_ssh_user }}/src/delft3d/Makefile.in"
+    chdir: "/home/{{ ansible_ssh_user }}/src/xbeach"
+    creates: "/home/{{ ansible_ssh_user }}/src/xbeach/Makefile"
 
 # Custom FCFLAGS because /usr/include is not in default path
 - name: Configure
-  shell: FCFLAGS="-I/usr/include -g -O2" ./configure  --with-mpi
+  shell: FCFLAGS="-I/usr/include -g -O2" ./configure  --with-netcdf
   args:
-    chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
-    creates: "/home/{{ ansible_ssh_user }}/src/delft3d/Makefile"
+    chdir: "/home/{{ ansible_ssh_user }}/src/xbeach"
+    creates: "/home/{{ ansible_ssh_user }}/src/xbeach/Makefile"
 
-- name: Make delft3d
+- name: Make xbeach
   command: make
   args:
-    chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
+    chdir: "/home/{{ ansible_ssh_user }}/src/xbeach"
 
 - name: Make install
   sudo: yes
   command: make install
   args:
-    chdir: "/home/{{ ansible_ssh_user }}/src/delft3d"
-    creates: "/usr/local/bin/d_hydro.exe"
+    chdir: "/home/{{ ansible_ssh_user }}/src/xbeach"
+    creates: "/usr/local/bin/xbeach"

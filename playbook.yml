@@ -14,7 +14,7 @@
   vars:
     venv: main
   roles:
-    - { role: nginx, tags: [ 'nginx' ] }
+    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
     - { role: couchdb, tags: [ 'couchdb' ] }
     - { role: wps, tags: [ 'wps' ] }
 
@@ -23,7 +23,7 @@
   vars:
     venv: main
   roles:
-    - { role: nginx, tags: [ 'nginx' ] }
+    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
     - { role: lizard, tags: [ 'lizard' ] }
     - { role: netcdf, tags: [ 'netcdf' ] } # custom netCDF4 version because 4.1.1 is broken
     - { role: vectors, tags: [ 'vectors' ] }
@@ -37,7 +37,7 @@
     - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
     - { role: nodejs, tags: ['nodejs']}
-    - { role: nginx, tags: [ 'nginx' ] }
+    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
     - { role: threedi-unstruc, tags: ['threedi-unstruc']}
 
 - name: Install CKAN
@@ -49,5 +49,38 @@
   roles:
     - { role: postgis, tags: [ 'postgis' ] }
     - { role: ckan, tags: [ 'ckan' ] }
+
+- name: Install SWAPP
+  hosts: swapp
+  vars:
+    venv: main
+  roles:
+    - role: nginx
+      sudo: yes
+      tags: [ 'nginx' ]
+      nginx_sites:
+        default:
+          - listen 80
+          - location / { try_files $uri $uri/ /index.html; }
+          - location /db  {
+             proxy_pass http://mongodb;
+             rewrite /db/(.*) /$1 break;
+             add_header Access-Control-Allow-Origin *;
+             add_header Access-Control-Allow-Headers X-Requested-With;
+            }
+      nginx_configs:
+        proxy:
+          - proxy_redirect off
+          - proxy_buffering off
+          - proxy_set_header Host $host
+          - proxy_set_header X-Real-IP  $remote_addr
+          - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
+        upstream:
+          - upstream mongodb {
+              server 127.0.0.1:6011;
+            }
+    - { role: mongodb, tags: [ 'mongodb' ] }
+    - { role: kule, tags: [ 'kule' ] }
+
 
 
