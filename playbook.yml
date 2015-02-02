@@ -66,8 +66,6 @@
           - location /db  {
              proxy_pass http://mongodb;
              rewrite /db/(.*) /$1 break;
-             add_header Access-Control-Allow-Origin *;
-             add_header Access-Control-Allow-Headers X-Requested-With;
             }
       nginx_configs:
         proxy:

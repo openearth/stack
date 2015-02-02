@@ -9,5 +9,9 @@
   service: name={{ mongodb_daemon_name }} state=started enabled=yes
   changed_when: False
 
+- name: Ensure mongodb is restarted
+  service: name={{ mongodb_daemon_name }} state=restarted enabled=yes
+  changed_when: False
+
 - include: mms-agent.yml
   when: mongodb_mms_api_key != ""
