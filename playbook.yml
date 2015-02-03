@@ -5,81 +5,15 @@
   vars:
     venv: main
   roles:
-    - { role: system, tags: [ 'system' ]}
     - { role: python, tags: [ 'python' ]}
     - { role: swap, tags: [ 'swap' ] }
 
 - name: Install WPS
-  hosts: wps
+  hosts: emodnet
   vars:
     venv: main
   roles:
-    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
-    - { role: couchdb, tags: [ 'couchdb' ] }
     - { role: wps, tags: [ 'wps' ] }
-
-- name: Lizard viewer
-  hosts: lizard
-  vars:
-    venv: main
-  roles:
-    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
-    - { role: lizard, tags: [ 'lizard' ] }
-    - { role: netcdf, tags: [ 'netcdf' ] } # custom netCDF4 version because 4.1.1 is broken
-    - { role: vectors, tags: [ 'vectors' ] }
-
-- name: Install Model Message service
-  hosts: mmi
-  vars:
-    venv: main
-  roles:
-    - { role: mmi, tags: [ 'mmi' ] }
-    - { role: engines, tags: [ 'engines' ] }
-    - { role: models, tags: [ 'models' ] }
-    - { role: nodejs, tags: ['nodejs']}
-    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
-    - { role: threedi-unstruc, tags: ['threedi-unstruc']}
-
-- name: Install CKAN
-  hosts: ckan
-  vars:
-    venv: main
-    databases:
-      - { name: ckan_default, owner: ckan_default, encoding: utf-8 }
-  roles:
-    - { role: postgis, tags: [ 'postgis' ] }
-    - { role: ckan, tags: [ 'ckan' ] }
-
-- name: Install SWAPP
-  hosts: swapp
-  vars:
-    venv: main
-  roles:
-    - { role: swap, tags: [ 'swap' ] }
-    - role: nginx
-      sudo: yes
-      tags: [ 'nginx' ]
-      nginx_sites:
-        default:
-          - listen 80
-          - location / { try_files $uri $uri/ /index.html; }
-          - location /db  {
-             proxy_pass http://mongodb;
-             rewrite /db/(.*) /$1 break;
-            }
-      nginx_configs:
-        proxy:
-          - proxy_redirect off
-          - proxy_buffering off
-          - proxy_set_header Host $host
-          - proxy_set_header X-Real-IP  $remote_addr
-          - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
-        upstream:
-          - upstream mongodb {
-              server 127.0.0.1:6011;
-            }
-    - { role: mongodb, tags: [ 'mongodb' ] }
-    - { role: kule, tags: [ 'kule' ] }
 
 
 

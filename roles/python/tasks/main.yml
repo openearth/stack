@@ -2,24 +2,6 @@
 - name: Make src directory
   file: path=~/src state=directory
 
-- name: Install default python packages and header files
-  sudo: yes
-  apt: pkg={{ item }} state=installed
-  with_items:
-    - python
-    - python-all-dev
-    - python-scipy
-    - python-numpy
-    - python-gdal
-    - python-skimage
-    - python-sklearn
-    - python-lxml
-    - python-virtualenv
-    - virtualenvwrapper
-    - libgeos-dev
-    - libnetcdf-dev
-    - libhdf5-dev
-    - cython
 
 - name: Make virtualenv dir
   file: path="{{ venvdir }}" state=directory
@@ -29,7 +11,6 @@
 - name: Make virtualenv
   command: virtualenv {{ venvabs }}
   when: venv_created | changed
-
 
 - name: Enable global site packages (so we do not have to build numpy and stuff)
   command: rm {{ venvabs }}/lib/python2.7/no-global-site-packages.txt

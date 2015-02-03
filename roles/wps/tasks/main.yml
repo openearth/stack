@@ -5,7 +5,7 @@
 - name: Download OpenEarthTools wps processes
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/wps dest=~/src/wps username=baart_f
 - name: Download PyWPS
-  git: repo=git://github.com/openearth/PyWPS.git version=couchprocesses dest=~/src/PyWPS
+  git: repo=git://github.com/geopython/PyWPS.git  dest=~/src/PyWPS
 
 - name: Make WPS output directory
   file:
@@ -29,8 +29,6 @@
     - netCDF4
 
 # difficult packages
-- name: Install tappy
-  pip: name=tappy virtualenv={{ venvabs }} extra_args="--allow-external tappy --allow-unverified tappy"
 - name: Install PyWPS
   pip: name=~/src/PyWPS virtualenv={{ venvabs }} extra_args=-e
 - name: Install OpenEarth
@@ -47,7 +45,7 @@
   template:
   args:
     src: supervisor_wps.conf
-    dest: /etc/supervisor/conf.d/pywps.conf
+    dest: ~/etc/supervisor/conf.d/pywps.conf
 
 - name: Copy pywps configuration
   template:
@@ -55,37 +53,4 @@
     src: pywps_wps.cfg
     dest: ~/pywps.cfg
 
-- name: Start supervisor
-  sudo: yes
-  service: name=supervisor state=started
 
-- name: Make wps website
-  sudo: yes
-  file: path=/var/www/wps state=directory
-
-- name: Copy content
-  sudo: yes
-  synchronize: src=wps dest=/var/www rsync_path='sudo rsync'
-
-
-- name: Copy nginx wps configuration
-  sudo: yes
-  template:
-  args:
-    src: nginx_wps.conf
-    dest: /etc/nginx/sites-available/wps.conf
-
-- name: Remove default site
-  sudo: yes
-  file: dest=/etc/nginx/sites-enabled/default state=absent
-
-- name: Enable WPS site
-  sudo: yes
-  file: src=/etc/nginx/sites-available/wps.conf dest=/etc/nginx/sites-enabled/wps.conf state=link
-
-- name: Start nginx
-  sudo: yes
-  service: name=nginx state=restarted
-
-
-# TODO: add to crontab find /tmp -name 'pywps-instance*' -type d -mtime +1 -exec rm -r {} \; #

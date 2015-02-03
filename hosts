@@ -1,13 +1,2 @@
-[wps]
-aws-wps
-
-
-[mmi]
-aws-mmi
-
-
-[lizard]
-aws-lizard
-
-[swapp]
-aws-swapp
+[emodnet]
+localhost
