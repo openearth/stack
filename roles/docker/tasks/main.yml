@@ -3,34 +3,41 @@
 
 # For wheezy
 - name: add the backports repository
+  sudo: yes
   apt_repository: repo='deb http://http.debian.net/debian wheezy-backports main' state=present
 
 - name: install curl
   apt: pkg={{ item }}  state=present
+  sudo: yes
   with_items:
       - curl
 
 - name: install kernel 3.16, for container support
   apt: pkg={{ item }}  state=present update_cache=true
+  sudo: yes
   with_items:
     - linux-image-amd64
 
 - name: install docker
   sudo: yes
   shell: curl -sSL https://get.docker.com/ | sh
+  creates: /usr/bin/docker
 
 - name: Add a docker file
-  template: src=Dockerfile dest=~/Dockerfile
+  template:
+  args:
+    src: Dockerfile
+    dest: ~/Dockerfile
 
 
 - name: Add inventory file
-  copy:
+  template:
   args:
     src: inventory
     dest: ~/inventory
 
 - name: Fill the docker image from within
-  command: docker build .
   sudo: yes
+  command: docker build .
 
 

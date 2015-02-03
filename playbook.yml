@@ -8,7 +8,6 @@
 
 - name: Docker
   hosts: emodnet
-  sudo: yes
   vars:
     venv: main
     project: emodnet
