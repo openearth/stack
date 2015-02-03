@@ -19,3 +19,18 @@
   sudo: yes
   shell: curl -sSL https://get.docker.com/ | sh
 
+- name: Add a docker file
+  template: src=Dockerfile dest=~/Dockerfile
+
+
+- name: Add inventory file
+  copy:
+  args:
+    src: inventory
+    dest: ~/inventory
+
+- name: Fill the docker image from within
+  command: docker build .
+  sudo: yes
+
+
