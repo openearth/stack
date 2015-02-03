@@ -21,7 +21,8 @@
 - name: install docker
   sudo: yes
   shell: curl -sSL https://get.docker.com/ | sh
-  creates: /usr/bin/docker
+  args:
+    creates: /usr/bin/docker
 
 - name: Add a docker file
   template:
