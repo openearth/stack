@@ -10,6 +10,6 @@ ENV PYTHONPATH /tmp/ansible/lib:$PYTHON_PATH
 RUN git clone http://github.com/openearth/stack.git -b {{ project }} /tmp/{{ project }}
 ADD inventory /etc/ansible/hosts
 WORKDIR /tmp/{{ project }}
-RUN ansible-playbook playbook.yml -c local -l {{ project }}-docker
+RUN ansible-playbook playbook.yml -c local
 EXPOSE 8081 6020
 CMD python ~/src/PyWPS/webservices/wsgi/wsgiwps.py
