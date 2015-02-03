@@ -27,6 +27,6 @@
     - waitress
     - python-dateutil
     - pytz
-    - netCDF4
     - pandas
     - rainbow-logging-handler<2.2.1
+    # - netCDF4

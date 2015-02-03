@@ -1,0 +1,21 @@
+---
+# tasks file for docker
+
+# For wheezy
+- name: add the backports repository
+  apt_repository: repo='deb http://http.debian.net/debian wheezy-backports main' state=present
+
+- name: install curl
+  apt: pkg={{ item }}  state=present
+  with_items:
+      - curl
+
+- name: install kernel 3.16, for container support
+  apt: pkg={{ item }}  state=present update_cache=true
+  with_items:
+    - linux-image-amd64
+
+- name: install docker
+  sudo: yes
+  shell: curl -sSL https://get.docker.com/ | sh
+

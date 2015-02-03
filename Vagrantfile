@@ -11,6 +11,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
 
+  config.vm.define "emodnet" do |emodnet|
+    emodnet.vm.network "private_network", type: "dhcp"
+    emodnet.vm.box = "puphpet/debian75-x64"
+  end
 
   config.vm.define "mmi" do |mmi|
     mmi.vm.network "private_network", type: "dhcp"

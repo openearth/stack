@@ -5,14 +5,21 @@
   vars:
     venv: main
   roles:
-    - { role: python, tags: [ 'python' ]}
-    - { role: swap, tags: [ 'swap' ] }
 
-- name: Install WPS
+- name: Docker
   hosts: emodnet
+  sudo: yes
   vars:
     venv: main
   roles:
+    - { role: docker, tags: [ 'docker' ] }
+
+- name: Install WPS
+  hosts: emodnet-docker
+  vars:
+    venv: main
+  roles:
+    - { role: python, tags: [ 'python' ]}
     - { role: wps, tags: [ 'wps' ] }
 
 

@@ -26,7 +26,8 @@
     - couchdb
     - python-dateutil
     - pytz
-    - netCDF4
+    - lxml
+    # - netCDF4
 
 # difficult packages
 - name: Install PyWPS
