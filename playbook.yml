@@ -16,6 +16,7 @@
 
 - name: Install WPS
   hosts: emodnet-docker
+  connection: local
   vars:
     venv: main
   roles:

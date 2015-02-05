@@ -1,2 +1,5 @@
 [emodnet]
 localhost
+
+[emodnet-docker]
+localhost
