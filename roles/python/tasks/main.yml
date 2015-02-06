@@ -5,6 +5,7 @@
   apt: pkg={{ item }} state=installed
   with_items:
     - virtualenvwrapper
+    - python-dev
 
 - name: Make src directory
   file: path=~/src state=directory
