@@ -2,7 +2,7 @@ FROM ubuntu
 MAINTAINER {{ ansible_ssh_user }}
 RUN apt-get -y update
 RUN apt-get install -y python-yaml python-jinja2 git python-apt sudo
-RUN git clone http://github.com/ansible/ansible.git -b v1.8.2   /tmp/ansible
+RUN git clone http://github.com/ansible/ansible.git -b v1.7.2   /tmp/ansible
 WORKDIR /tmp/ansible
 ENV PATH /tmp/ansible/bin:/bin:/sbin:/usr/sbin:/usr/bin
 ENV ANSIBLE_LIBRARY /tmp/ansible/library
