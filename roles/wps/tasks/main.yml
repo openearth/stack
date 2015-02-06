@@ -4,8 +4,9 @@
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/OpenEarthTools dest=~/src/OpenEarthTools username=baart_f
 - name: Download OpenEarthTools wps processes
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/wps dest=~/src/wps username=baart_f
+
 - name: Download PyWPS
-  git: repo=git://github.com/geopython/PyWPS.git  dest=~/src/PyWPS
+  git: repo=https://www.github.com/geopython/PyWPS.git  dest=~/src/PyWPS
 
 - name: Make WPS output directory
   file:
