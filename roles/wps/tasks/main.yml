@@ -1,5 +1,12 @@
 ---
 
+- name: Install python and virtualenv
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - libxml2-dev
+    - libxslt1-dev
+
 - name: Download OpenEarthTools package
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/OpenEarthTools dest=~/src/OpenEarthTools username=baart_f
 - name: Download OpenEarthTools wps processes

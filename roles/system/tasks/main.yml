@@ -1,15 +1,11 @@
 ---
 
-- name: Info
-  debug:
-
 # Update all packages to the latest version
 - name: Upgrade system
   sudo: yes
   apt: upgrade=safe update_cache=yes
 
 # tasks file for system
-#
 - name: Install packages
   sudo: yes
   apt: pkg={{ item }} state=installed

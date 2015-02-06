@@ -5,6 +5,7 @@
   vars:
     venv: main
   roles:
+    - { role: system, tags: [ 'system' ]}
 
 - name: Docker
   hosts: emodnet
