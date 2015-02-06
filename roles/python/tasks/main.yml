@@ -1,4 +1,11 @@
 ---
+
+- name: Install python and virtualenv
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - virtualenvwrapper
+
 - name: Make src directory
   file: path=~/src state=directory
 

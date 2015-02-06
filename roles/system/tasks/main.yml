@@ -1,4 +1,8 @@
 ---
+
+- name: Info
+  debug:
+
 # Update all packages to the latest version
 - name: Upgrade system
   sudo: yes
