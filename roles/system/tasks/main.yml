@@ -1,5 +1,12 @@
 ---
 
+# tasks file for system
+- name: Install aptitude
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - aptitude
+
 # Update all packages to the latest version
 - name: Upgrade system
   sudo: yes
