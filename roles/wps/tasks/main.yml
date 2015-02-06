@@ -44,19 +44,6 @@
 - name: Install OpenEarth
   pip: name=~/src/OpenEarthTools virtualenv={{ venvabs }} extra_args=-e
 
-# tasks file for wps
-- name: Stop supervisor
-  sudo: yes
-  service: name=supervisor state=stopped
-
-
-- name: Copy supervisor process
-  sudo: yes
-  template:
-  args:
-    src: supervisor_wps.conf
-    dest: ~/etc/supervisor/conf.d/pywps.conf
-
 - name: Copy pywps configuration
   template:
   args:
