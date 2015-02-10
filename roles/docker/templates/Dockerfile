@@ -16,5 +16,6 @@ ENV ANSIBLE_LIBRARY /opt/ansible/ansible/library
 RUN git clone https://github.com/openearth/stack.git -b {{ project }} /tmp/{{ project }}
 WORKDIR /tmp/{{ project }}
 RUN ansible-playbook playbook.yml -c local
+
 EXPOSE 8081 6020
-CMD python ~/src/PyWPS/webservices/wsgi/wsgiwps.py
+CMD /home/root/.virtualenvs/main/bin/python /root/src/PyWPS/webservices/wsgi/wsgiwps.py
