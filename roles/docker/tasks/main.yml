@@ -37,8 +37,10 @@
     src: inventory
     dest: ~/inventory
 
+# use "{{ ansible_env['HOME'] }}" if ~ doesn't work
 - name: Fill the docker image from within
   sudo: yes
   command: docker build .
-  chdir: ~
+  args:
+    chdir: ~
 
