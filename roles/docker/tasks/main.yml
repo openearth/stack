@@ -40,5 +40,5 @@
 - name: Fill the docker image from within
   sudo: yes
   command: docker build .
-
+  chdir: ~
 
