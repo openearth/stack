@@ -5,7 +5,7 @@
 - name: Download OpenEarthTools wps processes
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/wps dest=~/src/wps username=baart_f
 - name: Download PyWPS
-  git: repo=git://github.com/openearth/PyWPS.git version=couchprocesses dest=~/src/PyWPS
+  git: repo=https://github.com/openearth/PyWPS.git version=couchprocesses dest=~/src/PyWPS
 
 - name: Make WPS output directory
   file:
@@ -66,26 +66,6 @@
 - name: Copy content
   sudo: yes
   synchronize: src=wps dest=/var/www rsync_path='sudo rsync'
-
-
-- name: Copy nginx wps configuration
-  sudo: yes
-  template:
-  args:
-    src: nginx_wps.conf
-    dest: /etc/nginx/sites-available/wps.conf
-
-- name: Remove default site
-  sudo: yes
-  file: dest=/etc/nginx/sites-enabled/default state=absent
-
-- name: Enable WPS site
-  sudo: yes
-  file: src=/etc/nginx/sites-available/wps.conf dest=/etc/nginx/sites-enabled/wps.conf state=link
-
-- name: Start nginx
-  sudo: yes
-  service: name=nginx state=restarted
 
 
 # TODO: add to crontab find /tmp -name 'pywps-instance*' -type d -mtime +1 -exec rm -r {} \; #

@@ -6,17 +6,61 @@
     venv: main
   roles:
     - { role: system, tags: [ 'system' ]}
-    - { role: python, tags: [ 'python' ]}
     - { role: swap, tags: [ 'swap' ] }
+    - { role: python, tags: [ 'python' ]}
 
 - name: Install WPS
   hosts: wps
   vars:
     venv: main
   roles:
-    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
+    - role: nginx
+      sudo: yes
+      tags: [ 'nginx' ]
+      nginx_sites:
+        default:
+          - listen 80 default_server
+          - listen [::]:80 default_server ipv6only=on
+          - location / { try_files $uri $uri/ =404; }
+          - root /var/www/wps
+          - index index.html index.htm
+          - server_name wps.openearth.nl
+          - server_name localhost
+          - location /couchdb  {
+             proxy_pass http://couchdb;
+             rewrite /couchdb/(.*) /$1 break;
+             }
+          - location /wps {
+             proxy_pass http://wps;
+             rewrite /wps/(.*) /$1 break;
+             add_header Access-Control-Allow-Origin *;
+             add_header Access-Control-Allow-Headers X-Requested-With;
+             }
+          - location /output {
+             root {{ wps_output }}
+             add_header Access-Control-Allow-Origin *;
+             add_header Access-Control-Allow-Headers X-Requested-With;
+             }
+      nginx_configs:
+        proxy:
+          - proxy_redirect off
+          - proxy_buffering off
+          - proxy_set_header Host $host
+          - proxy_set_header X-Real-IP  $remote_addr
+          - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
+
+        upstream:
+          - upstream couchdb {
+              server 127.0.0.1:5984;
+            }
+          - upstream wps {
+              server 127.0.0.1:6543;
+            }
+
     - { role: couchdb, tags: [ 'couchdb' ] }
     - { role: wps, tags: [ 'wps' ] }
+
+
 
 - name: Lizard viewer
   hosts: lizard
