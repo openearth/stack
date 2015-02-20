@@ -27,6 +27,8 @@
     - python-dateutil
     - pytz
     - netCDF4
+    - statsmodels
+
 
 # difficult packages
 - name: Install tappy

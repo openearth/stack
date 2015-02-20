@@ -15,6 +15,7 @@
     - python-sklearn
     - python-lxml
     - python-virtualenv
+    - python-matplotlib
     - virtualenvwrapper
     - libgeos-dev
     - libnetcdf-dev

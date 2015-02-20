@@ -37,7 +37,7 @@
              add_header Access-Control-Allow-Headers X-Requested-With;
              }
           - location /output {
-             root {{ wps_output }}
+             root {{ wps_local_output }};
              add_header Access-Control-Allow-Origin *;
              add_header Access-Control-Allow-Headers X-Requested-With;
              }
