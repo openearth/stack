@@ -12,12 +12,6 @@
   with_items:
       - curl
 
-- name: install kernel 3.16, for container support
-  apt: pkg={{ item }}  state=present update_cache=true
-  sudo: yes
-  with_items:
-    - linux-image-amd64
-
 - name: install docker
   sudo: yes
   shell: curl -sSL https://get.docker.com/ | sh

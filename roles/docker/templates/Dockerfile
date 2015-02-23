@@ -17,5 +17,5 @@ RUN git clone https://github.com/openearth/stack.git -b {{ project }} /tmp/{{ pr
 WORKDIR /tmp/{{ project }}
 RUN ansible-playbook playbook.yml -c local
 
-EXPOSE 8081 6020
-CMD /home/root/.virtualenvs/main/bin/python /root/src/PyWPS/webservices/wsgi/wsgiwps.py
+EXPOSE 8081 8081
+CMD /home/root/.virtualenvs/main/bin/gunicorn --bind 0.0.0.0:8081 --pythonpath /root/src/PyWPS/webservices/wsgi wsgiwps:application

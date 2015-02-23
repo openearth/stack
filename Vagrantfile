@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "emodnet" do |emodnet|
     emodnet.vm.network "private_network", type: "dhcp"
-    emodnet.vm.box = "puphpet/debian75-x64"
+    emodnet.vm.box = "binarydata/debian-jessie"
   end
 
   config.vm.define "mmi" do |mmi|
