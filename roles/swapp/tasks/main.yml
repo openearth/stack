@@ -1,2 +1,11 @@
+
 ---
 # tasks file for swapp
+- name: Make swapp website
+  sudo: yes
+  file: path=/var/www/swapp state=directory
+
+- name: Download static swapp site
+  sudo: yes
+  git: repo=https://github.com/openearth/swapp.git dest=/var/www/swapp
+

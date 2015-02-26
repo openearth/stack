@@ -106,6 +106,9 @@
       nginx_sites:
         default:
           - listen 80
+          - root /var/www/swapp/static
+          - index index.html index.htm
+          - server_name swapp.deltares.nl.nl
           - location / { try_files $uri $uri/ /index.html; }
           - location /db  {
              proxy_pass http://mongodb;
@@ -124,6 +127,7 @@
             }
     - { role: mongodb, tags: [ 'mongodb' ] }
     - { role: kule, tags: [ 'kule' ] }
+    - { role: swapp, tags: [ 'swapp' ] }
 
 
 
