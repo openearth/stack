@@ -1,10 +1,12 @@
 ---
 
 - name: Download OpenEarthTools package
-  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/OpenEarthTools dest=~/src/OpenEarthTools username=baart_f
+  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/OpenEarthTools dest=~/src/OpenEarthTools
 - name: Download OpenEarthTools wps processes
-  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/wps dest=~/src/wps username=baart_f
-- name: Download PyWPS
+  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/wps dest=~/src/wps
+- name: Download fast
+  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/fast  dest=~/src/wps
+- name: Download PyWPS (the couchdb version)
   git: repo=https://github.com/openearth/PyWPS.git version=couchprocesses dest=~/src/PyWPS
 
 - name: Make WPS output directory
