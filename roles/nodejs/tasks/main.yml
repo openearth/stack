@@ -51,3 +51,11 @@
     mode=0644
   when: nodejs.npmrc|length > 0
 
+
+- name: Install bower
+  npm: name={{ item }} global=yes state=present
+  with_items:
+    - grunt-cli
+    - bower
+    - karma
+    - jshint
