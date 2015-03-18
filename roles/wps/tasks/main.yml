@@ -4,8 +4,8 @@
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/OpenEarthTools dest=~/src/OpenEarthTools
 - name: Download OpenEarthTools wps processes
   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/wps dest=~/src/wps
-- name: Download fast
-  subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/fast  dest=~/src/wps
+# - name: Download fast
+#   subversion: repo=https://svn.oss.deltares.nl/repos/openearthtools/trunk/python/applications/fast  dest=~/src/wps
 - name: Download PyWPS (the couchdb version)
   git: repo=https://github.com/openearth/PyWPS.git version=couchprocesses dest=~/src/PyWPS
 
@@ -67,9 +67,36 @@
   sudo: yes
   file: path=/var/www/wps state=directory
 
+
+
 - name: Copy content
   sudo: yes
   synchronize: src=wps dest=/var/www rsync_path='sudo rsync'
+
+- name: Download wpsbuilder (the web gui)
+  git: repo=https://github.com/openearth/wpsbuilder.git  dest=~/src/wpsbuilder
+
+- name: Install npm packages
+  command: npm install
+  args:
+    chdir: ~/src/wpsbuilder
+
+- name: Install bower packages
+  command: ~/.node/bin/bower install --config.interactive=false
+  args:
+    chdir: ~/src/wpsbuilder
+
+- name: Build website
+  command: ~/.node/bin/grunt build
+  args:
+    chdir: ~/src/wpsbuilder
+
+- name: Deploy content of dist file to wpsbuilder
+  sudo: yes
+  command: cp -r "{{ ansible_env['HOME'] }}/src/wpsbuilder/dist/" /var/www/wpsbuilder
+
+
+
 
 
 # TODO: add to crontab find /tmp -name 'pywps-instance*' -type d -mtime +1 -exec rm -r {} \; #
