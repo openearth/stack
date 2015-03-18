@@ -1,0 +1,69 @@
+---
+# tasks file for shiny
+
+- name: Install default python packages and header files
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python
+    - cmake
+    - build-essential
+    - gcc
+    - g++
+    - git
+    - r-base-dev
+    - make
+    - libssl-dev
+
+
+- name: Make src directory
+  file: path=~/src state=directory
+
+- name: Download shiny server
+  git: repo=https://github.com/rstudio/shiny-server.git dest=~/src/shiny-server
+
+- name: Make build directory
+  file: path=~/src/shiny-server/build state=directory
+
+- name: Make local directory
+  file: path=~/.local state=directory
+
+- name: CMake
+  command: cmake -DCMAKE_INSTALL_PREFIX=~/.local -DPYTHON=python ../
+  args:
+    chdir: ~/src/shiny-server/build
+    creates: ~/src/shiny-server/build/Makefile
+
+- name: Make
+  command: make
+  args:
+    chdir: ~/src/shiny-server/build
+
+- name: Make install
+  command: make install
+  args:
+    chdir: ~/src/shiny-server/build
+    creates: ~/.local/bin/shiny
+
+
+- name: Download npm packages
+  npm: path=~/src/shiny-server state=latest
+
+  # from http://adamj.eu/tech/2014/07/19/
+- name: r - packages
+  command: >
+   Rscript --slave --no-save --no-restore-history -e "if (! ('{{ item }}' %in% installed.packages()[,'Package'])) { install.packages(pkgs='{{ item }}', repos=c('http://ftp.heanet.ie/mirrors/cran.r-project.org/')); print('Added'); } else { print('Already installed'); }"
+  register: r_result
+  failed_when: "r_result.rc != 0 or 'had non-zero exit status' in r_result.stderr"
+  changed_when: "'Added' in r_result.stdout"
+  with_items:
+    - getopt
+
+- name: shiny
+  command: >
+   Rscript --slave --no-save --no-restore-history -e "if (! ('{{ item }}' %in% installed.packages()[,'Package'])) { install.packages(pkgs='{{ item }}', repos=c('http://cran.rstudio.com')); print('Added'); } else { print('Already installed'); }"
+  register: r_result
+  failed_when: "r_result.rc != 0 or 'had non-zero exit status' in r_result.stderr"
+  changed_when: "'Added' in r_result.stdout"
+  with_items:
+    - getopt
