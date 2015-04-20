@@ -4,8 +4,13 @@
   sudo: yes
   apt: pkg={{ item }} state=installed
   with_items:
-    - virtualenvwrapper
     - python-dev
+    - python-scipy
+    - python-numpy
+    - python-matplotlib
+    - virtualenvwrapper
+    - libnetcdf-dev
+    - libhdf5-dev
 
 - name: Make src directory
   file: path=~/src state=directory
@@ -35,6 +40,9 @@
     - waitress
     - python-dateutil
     - pytz
+    - netCDF4
     - pandas
+    - mako
+    - jdcal
     - rainbow-logging-handler<2.2.1
-    # - netCDF4
+

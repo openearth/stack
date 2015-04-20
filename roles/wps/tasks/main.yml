@@ -36,7 +36,9 @@
     - python-dateutil
     - pytz
     - lxml
-    # - netCDF4
+    - netCDF4
+    - mako
+    - jdcal
 
 # difficult packages
 - name: Install PyWPS
