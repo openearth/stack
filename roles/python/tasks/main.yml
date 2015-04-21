@@ -48,5 +48,6 @@
     - simplekml
     - SQLAlchemy
     - GeoAlchemy2
+    - psycopg2
     - rainbow-logging-handler<2.2.1
 
