@@ -8,6 +8,7 @@
     - python-scipy
     - python-numpy
     - python-matplotlib
+    - python-psycopg2
     - virtualenvwrapper
     - libnetcdf-dev
     - libhdf5-dev
@@ -44,5 +45,8 @@
     - pandas
     - mako
     - jdcal
+    - simplekml
+    - SQLAlchemy
+    - GeoAlchemy2
     - rainbow-logging-handler<2.2.1
 
