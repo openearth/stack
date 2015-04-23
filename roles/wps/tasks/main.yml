@@ -91,6 +91,10 @@
   args:
     chdir: ~/src/wpsbuilder
 
+- name: Delete old site
+  sudo: yes
+  file: path=/var/www/wpsbuilder state=absent
+
 - name: Deploy content of dist file to wpsbuilder
   sudo: yes
   command: cp -r "{{ ansible_env['HOME'] }}/src/wpsbuilder/dist/" /var/www/wpsbuilder
