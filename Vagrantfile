@@ -20,21 +20,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     wps.vm.network "private_network", type: "dhcp"
     wps.vm.box = "ubuntu/trusty64"
   end
-  config.vm.define "swapp" do |mmi|
-    mmi.vm.network "private_network", type: "dhcp"
-    mmi.vm.box = "ubuntu/trusty64"
+  config.vm.define "ckan" do |ckan|
+    ckan.vm.network "private_network", type: "dhcp"
+    ckan.vm.box = "ubuntu/trusty64"
   end
   config.vm.define "lizard" do |lizard|
     lizard.vm.network "private_network", type: "dhcp"
     lizard.vm.box = "ubuntu/trusty64"
   end
-  config.vm.define "shiny" do |ckan|
-    ckan.vm.network "private_network", type: "dhcp"
-    ckan.vm.box = "ubuntu/trusty64"
+  config.vm.define "shiny" do |shiny|
+    shiny.vm.network "private_network", type: "dhcp"
+    shiny.vm.box = "ubuntu/trusty64"
   end
-  config.vm.define "ckan" do |ckan|
-    ckan.vm.network "private_network", type: "dhcp"
-    ckan.vm.box = "ubuntu/trusty64"
+  config.vm.define "swapp" do |swapp|
+    swapp.vm.network "private_network", type: "dhcp"
+    swapp.vm.box = "ubuntu/trusty64"
+  end
+  config.vm.define "space" do |space|
+    space.vm.network "private_network", type: "dhcp"
+    space.vm.box = "ubuntu/trusty64"
   end
   config.vm.define "default" do |default|
     default.vm.box = "ubuntu/trusty64"
@@ -93,7 +97,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "ckan" => ["ckan-machine"],
       "lizard" => ["lizard-machine"],
       "shiny" => ["shiny-machine"],
-      "swapp" => ["swapp-machine"]
+      "swapp" => ["swapp-machine"],
+      "space" => ["space-machine"]
     }
     ansible.playbook = "playbook.yml"
   end

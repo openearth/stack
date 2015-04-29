@@ -1,0 +1,29 @@
+---
+# tasks file for rabbitmq
+
+- name: import repository key
+  sudo: yes
+  apt_key: url=http://www.rabbitmq.com/rabbitmq-signing-key-public.asc state=present
+
+- name: add apt repository
+  sudo: yes
+  apt_repository: repo="deb http://www.rabbitmq.com/debian/ testing main"
+    state=present update_cache=yes
+
+- name: install required packages
+  sudo: yes
+  apt: pkg={{ item }} state=present
+  with_items:
+    - rabbitmq-server
+
+- name: rabbitmq service started and enabled
+  sudo: yes
+  service: name=rabbitmq-server state=started enabled=yes
+
+- name: plugins
+  sudo: yes
+  rabbitmq_plugin: names={{ item }} state=enabled
+  with_items:
+    - rabbitmq_management
+    - rabbitmq_web_stomp
+    - rabbitmq_web_stomp_examples

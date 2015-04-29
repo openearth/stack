@@ -36,7 +36,6 @@
           - location /wps {
              proxy_pass http://wps;
              rewrite /wps/(.*) /$1 break;
-             add_header Access-Control-Allow-Origin *;
              add_header Access-Control-Allow-Headers X-Requested-With;
              }
           - location /output {
@@ -176,3 +175,9 @@
 
 
 
+- name: Install Space
+  hosts: space
+  vars:
+    venv: main
+  roles:
+    - { role: rabbitmq, tags: [ 'rabbitmq' ] }
