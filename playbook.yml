@@ -181,3 +181,10 @@
     venv: main
   roles:
     - { role: rabbitmq, tags: [ 'rabbitmq' ] }
+
+- name: Lastools
+  hosts: lastools
+  vars:
+    venv: main
+  roles:
+    - { role: lastools, tags: [ 'lastools' ] }
