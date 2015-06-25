@@ -1,0 +1,102 @@
+---
+# tasks file for lastools
+
+- name: install dependecies liblas
+  apt: name=liblas-bin state=build-dep
+  sudo: yes
+
+- name: install libgedal-dev
+  apt: name=libgdal-dev state=latest
+  sudo: yes
+
+- name: make source directory
+  file: dest=~/src/liblas state=directory
+
+- name: checkout liblas git
+  git: repo=https://github.com/libLAS/libLAS
+       dest=~/src/liblas
+
+- name: checkout lastools git
+  git: repo=https://github.com/LAStools/LAStools
+       dest=~/src/lastools
+
+- name: checkout laszip git
+  git: repo=https://github.com/LASzip/LASzip
+       dest=~/src/laszip
+
+- name: install aclocal
+  apt: name={{ item }} state=latest
+  sudo: yes
+  with_items:
+    - build-essential
+    - autoconf
+    - automake
+    - libtool
+
+- name: Autogen laszip
+  command: ./autogen.sh
+  args:
+    chdir: ~/src/laszip
+    creates: ~/src/laszip/Makefile.in
+
+- name: Configure laszip
+  command: ./configure
+  args:
+    chdir: ~/src/laszip 
+    creates: ~/src/laszip/Makefile 
+
+- name: Make laszip
+  command: /usr/bin/make
+  args:
+    chdir: ~/src/laszip
+
+- name: Make install laszip
+  command: make install
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/laszip"
+  sudo: yes
+
+
+
+- name: build lastools
+  command: /usr/bin/make
+  args:
+    chdir: ~/src/lastools
+    creates: ~/src/lastools/src/las2las
+
+- name: Install cmake
+  apt: pkg={{ item }} state=present update_cache=yes
+  tags: package
+  with_items:
+   - cmake
+   - cmake-curses-gui
+  sudo: yes
+
+- name: install gcc
+  apt: name=gcc state=installed
+  sudo: yes
+
+- name: prepare a build directory
+  file: path=~/src/liblas/build state=directory
+
+- name: configure base library
+  command: cmake -G "Unix Makefiles" -DWITH_LASZIP=ON -DWITH_GEOTIFF=ON -DWITH_GDAL=ON ~/src/liblas/
+  args:
+    chdir: ~/src/liblas/build
+ 
+- name: Build liblas library
+  command: /usr/bin/make
+  args:
+    chdir: ~/src/liblas/build
+
+- name: Install liblas
+  command: /usr/bin/make install
+  args:
+    chdir: "/home/{{ ansible_ssh_user }}/src/liblas/build"
+  sudo: yes
+    
+
+
+  
+  
+  
