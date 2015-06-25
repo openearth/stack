@@ -11,3 +11,6 @@ aws-lizard
 
 [swapp]
 aws-swapp
+
+[lastools]
+localhost ansible_connection=local
