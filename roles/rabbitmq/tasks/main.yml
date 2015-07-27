@@ -22,8 +22,16 @@
 
 - name: plugins
   sudo: yes
-  rabbitmq_plugin: names={{ item }} state=enabled
-  with_items:
-    - rabbitmq_management
-    - rabbitmq_web_stomp
-    - rabbitmq_web_stomp_examples
+  rabbitmq_plugin: names=rabbitmq_management_agent,rabbitmq_management,rabbitmq_web_stomp,rabbitmq_web_stomp_examples state=enabled
+
+
+- name: create a public administrator users for rabbitmq (use ip filtering for security)
+  sudo: yes
+  rabbitmq_user: user=public
+                 password=public
+                 vhost=/
+                 configure_priv=.*
+                 read_priv=.*
+                 write_priv=.*
+                 tags=administrator
+                 state=present
