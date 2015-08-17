@@ -29,6 +29,7 @@
           - location /couchdb  {
              proxy_pass http://couchdb;
              rewrite /couchdb/(.*) /$1 break;
+             client_max_body_size 100m;
              }
           - location /builder {
              alias /var/www/wpsbuilder;
@@ -37,6 +38,7 @@
              proxy_pass http://wps;
              rewrite /wps/(.*) /$1 break;
              add_header Access-Control-Allow-Headers X-Requested-With;
+             client_max_body_size 100m;
              }
           - location /output {
              alias {{ wps_local_output }};
