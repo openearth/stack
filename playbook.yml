@@ -182,6 +182,7 @@
   vars:
     venv: main
   roles:
+    - { role: rabbitmq, tags: [ 'rabbitmq' ] }
     - role: nginx
       sudo: yes
       tags: [ 'nginx' ]
@@ -232,4 +233,9 @@
               server 127.0.0.1:15674;
             }
 
-    - { role: rabbitmq, tags: [ 'rabbitmq' ] }
+- name: Lastools
+  hosts: lastools
+  vars:
+    venv: main
+  roles:
+    - { role: lastools, tags: [ 'lastools' ] }
