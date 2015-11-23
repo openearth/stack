@@ -29,6 +29,8 @@
           - location /couchdb  {
              proxy_pass http://couchdb;
              rewrite /couchdb/(.*) /$1 break;
+             add_header Access-Control-Allow-Origin *;
+             add_header Access-Control-Allow-Headers X-Requested-With;
              client_max_body_size 100m;
              }
           - location /builder {
@@ -39,6 +41,11 @@
              rewrite /wps/(.*) /$1 break;
              add_header Access-Control-Allow-Headers X-Requested-With;
              client_max_body_size 100m;
+             }
+          -  location /rwsgeo {
+              proxy_pass http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl;
+              add_header Access-Control-Allow-Origin *;
+              add_header Access-Control-Allow-Headers X-Requested-With;
              }
           - location /output {
              alias {{ wps_local_output }};
@@ -85,9 +92,9 @@
     - { role: mmi, tags: [ 'mmi' ] }
     - { role: engines, tags: [ 'engines' ] }
     - { role: models, tags: [ 'models' ] }
-    - { role: nodejs, tags: ['nodejs']}
-    - { role: nginx_wps, tags: [ 'nginx_wps' ] }
-    - { role: threedi-unstruc, tags: ['threedi-unstruc']}
+    # - { role: nodejs, tags: ['nodejs']}
+    # - { role: nginx_wps, tags: [ 'nginx_wps' ] }
+    # - { role: threedi-unstruc, tags: ['threedi-unstruc']}
 
 - name: Install CKAN
   hosts: ckan

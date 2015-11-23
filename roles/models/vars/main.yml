@@ -3,8 +3,9 @@
 
 modeldir: "/home/{{ ansible_ssh_user }}/models"
 models:
-    - { slug: 2004bay, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/2004bay", model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600, args: "-o s1 --interval 10" }
-    - { slug: parallel, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/parallel", model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900, args: "-o s1 --interval 10" }
-    - { slug: oceanbeach, repo: "https://svn.oss.deltares.nl/repos/xbeach/skillbed/input/oceanbeach", model: oceanbeach, engine: xbeach, configfile: "params.txt", port: 5950, args: "-o H -o zb -o zs --interval 30" }
+    - { slug: 2004bay, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/2004bay", model: 2004bay, engine: dflowfm,  configfile: "r02b_bay.mdu", port: 5600, args: "-o s1 --interval 10", environment: "" }
+    - { slug: parallel, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/san_francisco/parallel", model: parallel, engine: dflowfm,  configfile: "r07e_bay.mdu", port: 5900, args: "-o s1 --interval 10", environment: "" }
+    - { slug: oceanbeach, repo: "https://svn.oss.deltares.nl/repos/xbeach/skillbed/input/oceanbeach", model: oceanbeach, engine: xbeach, configfile: "params.txt", port: 5950, args: "-o H -o zb -o zs --interval 30", environment: "" }
+    - { slug: salinity, repo: "https://repos.deltares.nl/repos/ds/trunk/additional/unstruc/test_data/salinity", model: salinity, engine: dflowfm, configfile: "FlowFM.mdu", port: 5700, args: "-o sa1  --interval 30", environment: "LD_LIBRARY_PATH=/home/{{ ansible_ssh_user }}/dflowfm/lib" }
 
 # Boers 1c, Delta goot, revetment, vegetatie

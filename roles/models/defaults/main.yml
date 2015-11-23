@@ -1,0 +1,4 @@
+---
+# default virtual env name
+venv: "main"
+venvabs: "/home/{{ ansible_ssh_user }}/.virtualenvs/{{ venv }}"

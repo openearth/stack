@@ -74,7 +74,11 @@
   synchronize: src=wps dest=/var/www rsync_path='sudo rsync'
 
 - name: Download wpsbuilder (the web gui)
-  git: repo=https://github.com/openearth/wpsbuilder.git  dest=~/src/wpsbuilder
+  git:
+  args:
+    repo: https://github.com/openearth/wpsbuilder.git
+    dest: ~/src/wpsbuilder
+    force: yes
 
 - name: Install npm packages
   command: npm install
