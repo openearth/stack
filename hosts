@@ -15,6 +15,9 @@ aws-swapp
 [lastools]
 localhost ansible_connection=local
 
+[potreeconverter]
+localhost ansible_connection=local
+
 [space]
 aws-space
 

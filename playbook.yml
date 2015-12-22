@@ -239,3 +239,10 @@
     venv: main
   roles:
     - { role: lastools, tags: [ 'lastools' ] }
+
+- name: Potreeconverter
+  hosts: potreeconverter
+  vars:
+    venv: main
+  roles:
+    - { role: potreeconverter, tags: [ 'potreeconverter' ] }

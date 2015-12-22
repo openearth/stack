@@ -1,0 +1,59 @@
+---
+# tasks file for potreeconverter
+
+- name: install libboost
+  apt: name={{ item }} state=latest
+  sudo: yes
+  with_items:
+    - libboost-system-dev
+    - libboost-thread-dev
+    - liblas-dev
+    - liblas-c-dev
+
+- name: make source directory for potreeconverter lastools
+  file: dest=~/src/potree_lastools state=directory
+
+- name: checkout potree_lastools git
+  git: repo=https://github.com/m-schuetz/LAStools.git version=master
+       dest=~/src/potree_lastools
+
+- name: prepare a build directory
+  file: path=~/src/potree_lastools/LASzip/build state=directory
+
+- name: configure base library
+  command: cmake -DCMAKE_BUILD_TYPE=Release ..
+  args:
+    chdir: ~/src/potree_lastools/LASzip/build
+
+- name: Build potree_lastools library
+  command: /usr/bin/make
+  args:
+    chdir: ~/src/potree_lastools/LASzip/build
+
+- name: make source directory potreeconverter
+  file: dest=~/src/potreeconverter state=directory
+
+- name: checkout potreeconverter git
+  git: repo=https://github.com/potree/PotreeConverter version=master
+       dest=~/src/potreeconverter
+
+- name: prepare a build directory
+  file: path=~/src/potreeconverter/build state=directory
+
+- name: configure base library
+  command: cmake -DCMAKE_BUILD_TYPE=Release -DLASZIP_INCLUDE_DIRS=~/src/potree_lastools/LASzip/dll -DLASZIP_LIBRARY=~/src/potree_lastools/LASzip/build/src/liblaszip.so ..
+  args:
+    chdir: ~/src/potreeconverter/build
+
+- name: Build potreeconverter library
+  command: /usr/bin/make
+  args:
+    chdir: ~/src/potreeconverter/build
+
+# Copy PotreeConverter to /usr/local/bin. This is a temporary solution!!!
+# TODO makefile aanpassen with install option 
+
+- name: copy PotreeConverter to /usr/local/bin
+  copy: src=/home/{{ ansible_ssh_user }}/src/potreeconverter/build/PotreeConverter/PotreeConverter dest=/usr/local/bin/ mode="0755"
+  sudo: yes
+ 
