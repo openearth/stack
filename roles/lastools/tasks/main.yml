@@ -88,7 +88,7 @@
 
 - name: checkout liblas git
   git: repo=https://github.com/libLAS/libLAS
-       dest=~/src/liblas
+       dest=~/src/liblas version=1.8.0
 
 - name: prepare a build directory
   file: path=~/src/liblas/build state=directory
